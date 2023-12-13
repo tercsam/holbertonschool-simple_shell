@@ -9,10 +9,8 @@
 /**
  * main - Fonction principale du programme
  *
- * Description: Cette fonction est le point d'entrée du programme.
- * Elle gère la boucle principale d'interaction avec l'utilisateur.
  *
- * Return: 0 en cas de succès, sinon une valeur d'erreur.
+ * Return: Always 0
  */
 int main(void)
 {
@@ -48,8 +46,6 @@ int main(void)
  * execute_command - Exécute une commande en utilisant fork et exec
  * @command: La commande à exécuter
  *
- * Description: Cette fonction crée un processus fils pour exécuter
- * la commande spécifiée en utilisant exec.
  */
 void execute_command(char *command)
 {
