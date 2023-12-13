@@ -7,43 +7,43 @@
  */
 int main(void)
 {
-	char *buffer = NULL;
-	size_t len = 0;
-	char *token;
-	char *command;
-	char *args[10];
+	char *ligneSaisieUser = NULL;
+	size_t tailleLigneSaisie = 0;
+	char *mot;
+	char *nomCommande;
+	char *arguments[10];
 	int i;
 
 	while (1)
 	{
 		printf("($) ");
-		if (getline(&buffer, &len, stdin) == -1)
+		if (getline(&ligneSaisieUser, &tailleLigneSaisie, stdin) == -1)
 		{
-			free(buffer);
+			free(ligneSaisieUser);
 			perror("getline failed");
 			exit(EXIT_FAILURE);
 		}
 
-		buffer[strcspn(buffer, "\n")] = '\0';
+		ligneSaisieUser[strcspn(ligneSaisieUser, "\n")] = '\0';
 
-		if (strcmp(buffer, "exit") == 0)
+		if (strcmp(ligneSaisieUser, "exit") == 0)
 		{
-			free(buffer);
+			free(ligneSaisieUser);
 			exit(EXIT_SUCCESS);
 		}
-		
-		token = strtok(buffer, " ");
-		command = token;
+
+		mot = strtok(ligneSaisieUser, " ");
+		nomCommande = mot;
 		i = 0;
 
-		while (token != NULL)
+		while (mot != NULL)
 		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
+			arguments[i++] = mot;
+			mot = strtok(NULL, " ");
 		}
-		args[i] = NULL;
+		arguments[i] = NULL;
 
-		execute_command(command, args);
+		execute_command(nomCommande, arguments);
 	}
 
 	return (0);
@@ -55,7 +55,7 @@ int main(void)
  * @args: Tableau d'arguments de la commande
  *
  */
-void execute_command(char *command, char *args[])
+void execute_command(char *nomCommande, char *arguments[])
 {
 	pid_t child_pid;
 
@@ -69,7 +69,7 @@ void execute_command(char *command, char *args[])
 
 	if (child_pid == 0)
 	{
-		if (execvp(command, args) == -1)
+		if (execvp(nomCommande, arguments) == -1)
 		{
 			perror("execvp");
 			exit(EXIT_FAILURE);
