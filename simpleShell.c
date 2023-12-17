@@ -57,17 +57,17 @@ int main(void)
  */
 void execute_command(char *nomCommande, char *arguments[])
 {
-	pid_t child_pid;
+	pid_t idtPIDenfant;
 
-	child_pid = fork();
+	idtPIDenfant = fork();
 
-	if (child_pid == -1)
+	if (idtPIDenfant == -1)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
 
-	if (child_pid == 0)
+	if (idtPIDenfant == 0)
 	{
 		if (execvp(nomCommande, arguments) == -1)
 		{
