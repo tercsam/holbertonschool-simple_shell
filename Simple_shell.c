@@ -16,7 +16,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("($) ");
+		printf("$ ");
 		if (getline(&ligneSaisieUser, &tailleLigneSaisie, stdin) == -1)
 		{
 			free(ligneSaisieUser);
