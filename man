@@ -1,0 +1,34 @@
+NAME
+   HolbertonSchool - Simple shell project
+
+SYNOPSIS
+    #include "main.h"
+
+    int main(void);
+    void execute_command(char *nomCommande, char *arguments[]);
+
+DESCRIPTION
+    The program implements a basic shell using the C programming language. The shell provides a command-line interface where the user can input commands. The program continuously reads user inputs, parses them, and executes the corresponding commands.
+
+    main Function
+    The main function is the program's entry point. It initializes an infinite loop where it prompts the user with the `($)` prompt to enter a command. The program uses the `getline` function to read the user's command line from the standard input (stdin). It then checks if the command is "exit" to exit the shell or "env" to display the current environment. Otherwise, it parses the command, extracts the command name and its arguments, and calls the `execute_command` function to execute the command.
+
+    execute_command Function
+    The execute_command function takes the command name and an array of arguments as parameters. It uses the `fork` function to create a child process that will execute the command. In the child process, the function constructs the full path of the command by searching the directories in the PATH and checks if the command is executable. If the command is found, it is executed using the `execvp` function. In case of execution failure, error messages are displayed. The parent process waits for the child process to finish using the `wait` function.
+
+RETURN VALUE
+    The main function always returns 0 (EXIT_SUCCESS).
+
+ERRORS
+    In case of an error during program execution, error messages are displayed on the standard error output (stderr).
+
+SEE ALSO
+    - getline(3): https://linux.die.net/man/3/getline
+    - fork(2): https://linux.die.net/man/2/fork
+    - execvp(3): https://linux.die.net/man/3/exec
+
+AUTHOR
+    Mascret Clément and Kais Paumond
+
+NOTES
+    The program may have limitations and security vulnerabilities, and it is recommended for educational purposes only. For production use, it is advised to use more robust and secure shell solutions.
