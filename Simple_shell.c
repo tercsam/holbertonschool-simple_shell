@@ -34,7 +34,6 @@ int main(void)
 
 		if (strcmp(ligneSaisieUser, "env") == 0)
 		{
-			// If the command is "env", print the current environment
 			char **env = environ;
 			while (*env != NULL)
 			{
