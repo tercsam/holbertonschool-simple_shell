@@ -13,6 +13,7 @@ int main(void)
 	char *nomCommande;
 	char *arguments[10];
 	int i;
+	char **env;
 
 	while (1)
 	{
@@ -34,7 +35,6 @@ int main(void)
 
 		if (strcmp(ligneSaisieUser, "env") == 0)
 		{
-			char **env = environ;
 			while (*env != NULL)
 			{
 				printf("%s\n", *env);
