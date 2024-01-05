@@ -1,5 +1,5 @@
 
-i#include "main.h"
+#include "main.h"
 
 /**
  * tokenize - function that splits a string into multiple ones
