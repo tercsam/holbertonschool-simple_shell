@@ -13,10 +13,11 @@ int main(void)
 	char *nomCommande;
 	char *arguments[10];
 	int i;
+	char **env;
 
 	while (1)
 	{
-		printf("($) ");
+		printf("$ ");
 		if (getline(&ligneSaisieUser, &tailleLigneSaisie, stdin) == -1)
 		{
 			free(ligneSaisieUser);
@@ -30,6 +31,16 @@ int main(void)
 		{
 			free(ligneSaisieUser);
 			exit(EXIT_SUCCESS);
+		}
+
+		if (strcmp(ligneSaisieUser, "env") == 0)
+		{
+			while (*env != NULL)
+			{
+				printf("%s\n", *env);
+				env++;
+			}
+			continue;
 		}
 
 		mot = strtok(ligneSaisieUser, " ");
@@ -46,7 +57,7 @@ int main(void)
 		execute_command(nomCommande, arguments);
 	}
 
-	return (0);
+	return 0;
 }
 
 /**
@@ -58,6 +69,34 @@ int main(void)
 void execute_command(char *nomCommande, char *arguments[])
 {
 	pid_t idtPIDenfant;
+	char *path = getenv("PATH");
+	char *token, *directory;
+	int command_exists = 0;
+
+	token = strtok(path, ":");
+
+	while (token != NULL)
+	{
+		directory = malloc(strlen(token) + strlen("/") + strlen(nomCommande) + 1);
+		strcpy(directory, token);
+		strcat(directory, "/");
+		strcat(directory, nomCommande);
+
+		if (access(directory, X_OK) == 0)
+		{
+			command_exists = 1;
+			break;
+		}
+
+		free(directory);
+		token = strtok(NULL, ":");
+	}
+
+	if (!command_exists)
+	{
+		fprintf(stderr, "Command not found: %s\n", nomCommande);
+		return;
+	}
 
 	idtPIDenfant = fork();
 
@@ -69,7 +108,7 @@ void execute_command(char *nomCommande, char *arguments[])
 
 	if (idtPIDenfant == 0)
 	{
-		if (execvp(nomCommande, arguments) == -1)
+		if (execvp(directory, arguments) == -1)
 		{
 			perror("execvp");
 			exit(EXIT_FAILURE);
@@ -79,5 +118,6 @@ void execute_command(char *nomCommande, char *arguments[])
 	{
 		wait(NULL);
 	}
-}
 
+	free(directory);
+}
